@@ -1,0 +1,21 @@
+http:
+  port: "8081"
+  
+american:
+  host: "training-american-ws-vineelam-proxy.us-e2.cloudhub.io"
+  port: "80"
+  basepath: "/"
+  protocol: "HTTP"
+  client_id: "3bfe26667b774337b4010cc9187e4fd8"
+  client_secret: "f2fD396D29e642E7BC6fe85f4A7F6727"
+  
+training:
+  host: "ilt.learn.mulesoft.com"
+  port: "80"
+  basepath: "/"
+  protocol: "HTTP"
+  
+delta:
+  wsdl: "http://ilt.learn.mulesoft.com/delta?wsdl"
+  service: "TicketServiceService"
+  port: "TicketServicePort"
