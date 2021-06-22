@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="79a4bc70-97bd-4360-9f63-558a58f42653" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<configuration doc:name="Configuration" doc:id="52e5fff5-4eda-4366-8322-4768289be6e0" defaultErrorHandler-ref="globalErrorHandler" />
+	<error-handler name="globalErrorHandler" doc:id="a7400d04-7d4b-4303-be8e-f232c9810fbc" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="80e875dd-9ed3-43e0-8228-604b91ff6f03" >
+			<set-payload value="Global Error" doc:name="Global Error" doc:id="fdbdceaf-926b-4987-94d8-a2a33783d1a7" />
+		</on-error-propagate>
+	</error-handler>
+	<flow name="childFlow" doc:id="a5ec842c-4769-4b49-aca3-742b72acbf2e" >
+		<validation:is-number doc:name="Is number" doc:id="e04f0823-4d79-4815-b441-71e8a209748e" value="#[payload]" numberType="INTEGER" message="Not a Number" >
+			<error-mapping sourceType="VALIDATION:INVALID_NUMBER" targetType="CHILD_FLOW:INVALID_NUMBER" />
+		</validation:is-number>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="5c4583cf-79ff-4ae1-9013-1ff1cde76fdf" >
+				<set-payload value="Error - Child Flow" doc:name="Error - Child Flow" doc:id="39f77e42-229c-483f-9642-373b594a4a15" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+	<flow name="mainFlow" doc:id="0e552a12-c7f4-4efe-a1bb-7ea5c440e7b4" >
+		<http:listener doc:name="Listener" doc:id="836561b6-0048-4fd0-ab3f-947e56091dec" config-ref="HTTP_Listener_config" path="/test"/>
+		<set-payload value="Success - Started Flow" doc:name="Success - Started Flow" doc:id="cabdcfcb-0622-48d5-b676-ad8e642fd38e" />
+		<flow-ref doc:name="childFlow" doc:id="d5f545fd-e346-499c-ad97-d87dbf7df7fc" name="childFlow" />
+		<try doc:name="Try" doc:id="56301fc2-140b-41b6-89dd-ebb0e3218a3e" >
+			<http:request method="GET" doc:name="Request" doc:id="094f481b-1561-48d7-9a79-08c03059e7cf" />
+		</try>
+		<set-payload value="Success - Finished Flow" doc:name="Success - Finished Flow" doc:id="f2aa4c26-5af6-473a-af16-da226440efe4" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a26012b7-4fe5-47c7-90a4-adb5b811601c" >
+				<set-payload value="Error - Main Flow" doc:name="Error - Main Flow" doc:id="3f94fc70-4325-4e1f-b78e-15474276f313" />
+			</on-error-propagate>
+		</error-handler>
+	
+</flow>
+</mule>

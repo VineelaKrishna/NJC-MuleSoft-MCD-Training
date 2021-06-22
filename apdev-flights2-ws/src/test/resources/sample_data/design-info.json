@@ -1,0 +1,13 @@
+{
+  "sampleData": {
+    "df7d6ad6-f4a5-4e03-92c3-9320a587ba09": {
+      "payload": "sample_data/listAllFlightsResponse_1.xml"
+    },
+    "3e922666-d6bd-49c2-a310-79dea04e1c23": {
+      "payload": "sample_data/json.json"
+    },
+    "e72b0c34-46c0-4884-a317-fcfe484966df": {
+      "payload": "sample_data/json_1.json"
+    }
+  }
+}
